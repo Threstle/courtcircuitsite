@@ -1,0 +1,19 @@
+{
+  "name": "sass-test",
+  "version": "0.0.0",
+  "authors": [
+    "Threstle <etienne.chaumont@gmail.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "matter-js": "~0.8.0-alpha"
+  }
+}
