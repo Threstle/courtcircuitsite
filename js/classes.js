@@ -5,6 +5,8 @@ var Engine = Matter.Engine;
 var World = Matter.World;
 var Bodies = Matter.Bodies;
 var Events = Matter.Events;
+var Body = Matter.Body;
+var Composite = Matter.Composite;
 
 window.BallPhys = function(w,h){
 	console.log("ball engine created");
@@ -35,26 +37,20 @@ window.BallPhys = function(w,h){
 
 BallPhys.prototype = {
 	
+	onBilleTouch : function() {},
 
 	run : function() {
-				// create two boxes and a ground
-
-
-	/*	var boxA = Bodies.circle(this.width*0.3, 200, 50,{density: 0.0005,frictionAir: 0.00006,restitution: 0.4,friction: 0.01,render: {
-                        strokeStyle: 'transparent',
-                        fillStyle: 'black'
-                    }});
-
-		this.boxB = Bodies.circle(this.width*0.7, 200, 20,{render: {
-                        strokeStyle: 'transparent',
-                        fillStyle: 'black'
-                    }});*/
-
-		
+		this.firstComposite = Composite.create();
+		this.nextComposite = Composite.create();
 		this.spawnFirstBall();
 
 		
 		var ground = Bodies.rectangle(0, this.height*0.90,this.width*2, this.height/10, { isStatic: true, render:{
+			fillStyle:"transparent",
+			strokeStyle:"transparent"
+		} });
+
+		var wall = Bodies.rectangle(this.width*0.50, this.height*0.50,this.width*0.10, this.height, { isStatic: true, render:{
 			fillStyle:"transparent",
 			strokeStyle:"transparent"
 		} });
@@ -66,10 +62,19 @@ BallPhys.prototype = {
 		Engine.run(this.engine);
 		
 		Events.on(this.engine, "mousedown",  function(e){
-			if(this.checkBalls(e.mouse.position,this.balls))this.spawnNextBall();
+			
+			if(this.checkBalls(e.mouse.position,this.balls)){
+				this.onBilleTouch();
+		
+			}
+
 		}.bind(this)) 
 
 		this.spawnCursor();
+		Matter.Composite.add(this.engine.world,[wall,ground,this.firstComposite,this.nextComposite]);
+		this.engine.input.mouse.element.removeEventListener("mousewheel", this.engine.input.mouse.mousewheel);
+		this.engine.input.mouse.element.removeEventListener("DOMMouseScroll", this.engine.input.mouse.mousewheel);
+		this.engine.input.mouse.element.removeEventListener("mousemove",this.engine.input.mouse);
 	},
 
 	addBall : function(x,y,r){
@@ -80,26 +85,32 @@ BallPhys.prototype = {
 		if(this.firstBall!=null && this.firstBall.checkPosition(pos)){
 			this.firstBall.fade();
 			setTimeout(this.spawnNextBall(),1000);
-			return;
+			return true;
 		}
 		else if(this.nextBall!=null && this.nextBall.checkPosition(pos)){
 			this.nextBall.fade();
 			setTimeout(this.spawnFirstBall(),1000);
-			return;
+			return true;
 		}
-
+		else{
+		return false;
+		}
 	},
 
 	spawnFirstBall : function(){
-		this.firstBall = new Ball(this.width*0.3,this.height*0,50);
+		//World.clear(this.engine.world,false);
+		this.firstBall = new Ball(0-this.width*0.1,this.height*0.50,40,this.engine,this.firstComposite);
 		this.nextBall = null;
-		World.add(this.engine.world, this.firstBall.circle);
+		Matter.Composite.addBody(this.firstComposite, this.firstBall.circle);
+		Body.applyForce(this.firstBall.circle, { x: this.firstBall.circle.position.x, y: this.firstBall.circle.position.y }, {x:0.05,y:0});
 	},
 
 	spawnNextBall : function(){
-		this.nextBall = new Ball(this.width*0.7,this.height*0,50);
+		//World.clear(this.engine.world,false);
+		this.nextBall = new Ball(this.width+this.width*0.1,this.height*0.50,40,this.engine,this.nextComposite);
 		this.firstBall = null;
-		World.add(this.engine.world, this.nextBall.circle);
+		Matter.Composite.addBody(this.nextComposite, this.nextBall.circle);
+		Body.applyForce(this.nextBall.circle, { x: this.nextBall.circle.position.x, y: this.nextBall.circle.position.y }, {x:-0.05,y:0});
 	},
 
 	spawnCursor : function(){
@@ -121,9 +132,10 @@ BallPhys.prototype = {
 } ;
 
 
-window.Ball = function(x,y,r,engine){
+window.Ball = function(x,y,r,engine,composition){
 	this.alpha = 0.5;
-	this.circle = Bodies.circle(x,y,r,{density: 0.0005,frictionAir: 0.00006,restitution: 0.4,friction: 0.01,render: {
+	this.composition = composition;
+	this.circle = Bodies.circle(x,y,r,{density: 0.0005,frictionAir: 0.006,restitution: 0.4,friction: 0.6,render: {
                         strokeStyle: 'transparent',
                         fillStyle: 'rgba(1,1,1,'+this.alpha+')'
                     }});
@@ -136,10 +148,12 @@ Ball.prototype.fade = function() {
 	
 	setTimeout(function(){
 		this.alpha-=0.1;
+		if(this.alpha<0)this.alpha=0;
 		this.circle.render.fillStyle='rgba(1,1,1,'+this.alpha+')';
 		if(this.alpha > 0)this.fade();
 		else{
 			this.circle.circleRadius = 0;
+			World.clear(this.composition,false);
 		}
 	}.bind(this),50);
 

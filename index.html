@@ -2,24 +2,29 @@
 <html>
 	<head>
 		<title>Court-Circuit</title>
-
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" href="stylesheets/screen.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
 		<script src="bower_components/matter-js/build/matter.min.js"></script>
 		
+		
 	</head>
 
 	<body>
-		<div id="header">
+		<div id="header" data-color="yellow">
 			<img src="img/logo.png"</img>
 			<div id="vague"></div>
+			<p class="debug"></p>
+			<ul>
+ 				<li class="layer" data-depth="1.00"></li>
+ 			</ul>
 		</div>
 
-		<div id="description">
+		<div id="description" class="scene">
 			<p>Court Circuit est un jeu de bille connecté. C'est un moyen universel et poétique de relier à distance un enfant et son parent.</p>
 			<p>Chaque module à la pouvoir de téléporter la bille au module opposé. De ce fait la distance est transformé en un moment magique et ludique.</p>
-			<div id="particles">
+			<div class="particles layer" data-depth="0.2">
 				<span class="particle"></span>
 				<span class="particle"></span>
 				<span class="particle"></span>
@@ -28,10 +33,21 @@
 				<span class="particle"></span>
 				<span class="particle"></span>
 				<span class="particle"></span>
+				
 			</div>
+			
+			
+
 		</div>
 		<div id="team">
 			<h2>L'équipe</h2>
+				<div id="particles-team">
+					<span class="particle"></span>
+					<span class="particle"></span>
+					<span class="particle"></span>
+					<span class="particle"></span>
+
+				</div>
 			<ul>
 			<li><img src="img/team_jason.png"><a>JasonBoyer</a></li>
 			<li><img src="img/team_etienne.png"><a>Etienne Chaumont</a></li>
@@ -44,5 +60,6 @@
 
 			<script src="js/classes.js"></script>
 			<script src="js/script.js"></script>
+			<script src="js/lib/parallax.js"></script>
 	</body>
 </html>
