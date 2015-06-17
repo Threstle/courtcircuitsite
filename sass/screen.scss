@@ -3,20 +3,40 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
+@-webkit-keyframes MOVE-BG {
+	from {
+		-webkit-transform: translateX(0);
+	}
+	to { 
+		-webkit-transform: translateX(-187%);
+	}
+}
+
+
 @import "compass/reset";
 
 $font-stack:    Helvetica, sans-serif;
 $red-color: #fd3b00;
-
 html, body {
 	width : 100% ;
 	height : 100% ;
 	margin : 0 ;
 	padding : 0 ;
+	color: #02339f;
+}
+
+p{
+	font-size: 180%;
+	text-align:center;
 }
 
 h1{
 	font-size:400%;
+}
+
+h2{
+	font-size:250%;
+	text-align:center;
 }
 
 html{
@@ -28,15 +48,18 @@ html{
 
 		#header{
 			
-			background-color: $red-color;
+			background-image: url('../img/pattern.png');
 			height:100%; width:100%;
 	    	display: table;
+	    	background-size: 30%;
+	    	background-color : #ffca0e;
 
-			h1{
-				text-align: center;
-	  			color: white;
-	  			display: table-cell;
-	    		vertical-align: middle;
+			img{
+			  margin-right: auto;
+			  margin-left: auto;
+			  display: block;
+			  height: 30%;
+			  margin-top: 15%;
 	  			
 			}
 
@@ -47,12 +70,124 @@ html{
 				  top: 0;
 				  position: absolute;
 			}
+
+			#vague{
+				background-image: url("../img/vague.png");
+				width: 100%;
+				height: 51px;
+				background-repeat-y: no-repeat;
+				position: absolute;
+				bottom: 0;
+			}
 		}
 
-		#content{
-			height:100%; width:100%;
+	  	#description{
+		    width: 100%;
+			
+			line-height: 40px;
+			height: 100%;
+			padding-top: 25%;
 
+			p{
+				margin-left: auto;
+				margin-right: auto;
+				width:50%;
+			}
+
+
+			p:first-child{
+	  			margin-bottom:50px;
+	  		}
+
+	  		.particle{
+	  			height:5%;
+	  			width:5%;
+	  			background-position:fixed;
+	  			position:absolute;
+	  			background-repeat:no-repeat;
+	  			background-image:url('../img/circle1.png');
+	  			background-size: contain;
+	  		}
+
+	  		.particle:nth-child(1){
+	  			
+	  			background-image:url('../img/square1.png');
+	  			margin: -20% 0 0% 14%;
+
+	  		}
+
+	  		.particle:nth-child(2){
+	  			
+	  			background-image:url('../img/circle2.png');
+	  			margin: -9% 0 0% 16%;
+	  		}
+
+	  		.particle:nth-child(3){
+	  			
+	  			background-image:url('../img/square3.png');
+	  			margin: 3% 0 0% 11%;
+	  		}
+
+	  		.particle:nth-child(4){
+	  			
+	  			background-image:url('../img/triangle1.png');
+	  			margin: 7% 0 0% 15%;
+	  		}
+
+	  		.particle:nth-child(5){
+	  			
+	  			background-image:url('../img/circle1.png');
+	  			margin: 7% 0 0% 82%;
+	  		}
+
+	  		.particle:nth-child(6){
+	  			
+	  			background-image:url('../img/square2.png');
+	  			margin: 1% 0 0% 88%;
+	  		}
+
+	  		.particle:nth-child(7){
+	  			
+	  			background-image:url('../img/square2.png');
+	  			margin: -6% 0 0% 91%;
+	  		}
+
+	  		.particle:nth-child(8){
+	  			
+	  			background-image:url('../img/square2.png');
+	  			margin: -22% 0 0% 83%;
+	  		}
+	 	}
+
+		#team{
+			height: 100%;
+			width: 100%;
+			margin-left: auto;
+			margin-right: auto;
+
+			ul{
+				
+				text-align: center;
+				margin-top: 5%;
+
+				li{
+					margin: 0% 2% 5% 2%;
+					display:inline-block;
+
+					img{
+						width: 168px;
+  						height: 168px;
+					}
+
+					a{
+						display:block;
+					}
+				}
+			}
 		}
+
+
+		
 
 	}
 
