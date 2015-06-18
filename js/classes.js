@@ -9,7 +9,7 @@ var Body = Matter.Body;
 var Composite = Matter.Composite;
 
 window.BallPhys = function(w,h){
-	console.log("ball engine created");
+
 	this.firstBall;
 	this.nextBall;
 			this.engine = Engine.create(document.getElementById('header'),{
@@ -50,18 +50,23 @@ BallPhys.prototype = {
 			strokeStyle:"transparent"
 		} });
 
-		var wall = Bodies.rectangle(this.width*0.50, this.height*0.50,this.width*0.10, this.height, { isStatic: true, render:{
+		var wallL = Bodies.rectangle(0, this.height,this.width*0.001, this.height*0.45, { isStatic: true, render:{
+			fillStyle:"transparent",
+			strokeStyle:"transparent"
+		} });
+
+		var wallR = Bodies.rectangle(this.width, this.height,this.width*0.001, this.height*0.45, { isStatic: true, render:{
 			fillStyle:"transparent",
 			strokeStyle:"transparent"
 		} });
 
 		// add all of the bodies to the world
-		World.add(this.engine.world, [ground]);
-		
+/*		World.add(this.engine.world, [ground,wallL,wallR]);
+		*/
 		// run the engine
 		Engine.run(this.engine);
 		
-		Events.on(this.engine, "mousedown",  function(e){
+		Events.on(this.engine, "mouseup",  function(e){
 			
 			if(this.checkBalls(e.mouse.position,this.balls)){
 				this.onBilleTouch();
@@ -71,10 +76,28 @@ BallPhys.prototype = {
 		}.bind(this)) 
 
 		this.spawnCursor();
-		Matter.Composite.add(this.engine.world,[wall,ground,this.firstComposite,this.nextComposite]);
-		this.engine.input.mouse.element.removeEventListener("mousewheel", this.engine.input.mouse.mousewheel);
-		this.engine.input.mouse.element.removeEventListener("DOMMouseScroll", this.engine.input.mouse.mousewheel);
-		this.engine.input.mouse.element.removeEventListener("mousemove",this.engine.input.mouse);
+		Matter.Composite.add(this.engine.world,[wallL,wallR,ground,this.firstComposite,this.nextComposite]);
+		
+		var mouse = this.engine.input.mouse;
+		mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
+		mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
+		mouse.element.removeEventListener("mousemove",mouse);
+
+		mouse.element.removeEventListener('mousedown', mouse.mousedown);
+		//mouse.element.removeEventListener('mouseup', mouse.mouseup);
+		mouse.element.removeEventListener('touchmove', mouse.mousemove);
+		mouse.element.removeEventListener('touchstart', mouse.mousedown);
+		//mouse.element.removeEventListener('touchend', mouse.mouseup);
+        
+        //element.addEventListener('mousedown', mouse.mousedown);
+        //element.addEventListener('mouseup', mouse.mouseup);
+        
+        //element.addEventListener("mousewheel", mouse.mousewheel);
+        //element.addEventListener("DOMMouseScroll", mouse.mousewheel);
+
+        //element.addEventListener('touchmove', mouse.mousemove);
+        //element.addEventListener('touchstart', mouse.mousedown);
+        //element.addEventListener('touchend', mouse.mouseup);
 	},
 
 	addBall : function(x,y,r){
@@ -133,7 +156,7 @@ BallPhys.prototype = {
 
 
 window.Ball = function(x,y,r,engine,composition){
-	this.alpha = 0.5;
+	this.alpha = 1;
 	this.composition = composition;
 	this.circle = Bodies.circle(x,y,r,{density: 0.0005,frictionAir: 0.006,restitution: 0.4,friction: 0.6,render: {
                         strokeStyle: 'transparent',

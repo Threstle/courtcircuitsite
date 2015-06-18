@@ -47,7 +47,7 @@ $( document ).ready(function() {
 	    var el = $(el);
 
 	    if (isScrolledIntoView(el)) {
-	    	console.log(el);
+
 	      el.addClass("appear"); 
 	    }
 	    else{
@@ -55,6 +55,15 @@ $( document ).ready(function() {
 	    }
 	  });
 	  
+	});
+
+	$('#closeButton').click(function(){
+		hideTeaser();
+	});
+
+	$('#playButton').click(function(){
+
+		playTeaser();
 	});
 
 
@@ -67,7 +76,7 @@ $( document ).ready(function() {
 		}
 	}
 
-		function isScrolledIntoView(elem)
+	function isScrolledIntoView(elem)
 	{
 	    var $elem = $(elem);
 	    var $window = $(window);
@@ -80,4 +89,19 @@ $( document ).ready(function() {
 
 	    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 	}
+
+	function hideTeaser(){
+
+		$('iframe').fadeOut(200);
+		$('#closeButton').fadeOut(200);
+		$('#playButton').fadeIn(200);
+
+	}
+
+	function playTeaser(){
+		$('#playButton').fadeOut(200);
+		$('iframe').fadeIn(200);
+		$('#closeButton').fadeIn(200);
+	}
+
 });
